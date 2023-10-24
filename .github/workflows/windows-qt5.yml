@@ -1,4 +1,4 @@
-name: Windows Qt5.15.2
+name: Windows Qt5.14.2
 on: 
   push:
     paths:
@@ -28,8 +28,7 @@ jobs:
             msvc_arch: x64
             qt_arch_install: msvc2017_64          
     env:
-      targetName: example.exe
-      fileName: example
+      fileName: dataengine
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -48,7 +47,7 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.msvc_arch }}
-          qmake
+          qmake -makefile
           nmake
           echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
           echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
@@ -62,7 +61,7 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          & scripts\windows-publish.ps1 ${env:archiveName} ${env:targetName}
+          & scripts\windows-publish.ps1 ${env:archiveName}
           # 记录packageName给后续step
            $name = ${env:archiveName}
            echo "::set-output name=packageName::$name"     

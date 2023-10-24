@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param (
-    [string] $archiveName, [string] $targetName
+    [string] $archiveName
 )
 # 外部环境变量包括:
 # archiveName: ${{ matrix.qt_ver }}-${{ matrix.qt_arch }}
@@ -32,8 +32,8 @@ function Main() {
     Compress-Archive -Path dist $archiveName'.zip'
 }
 
-if ($null -eq $archiveName || $null -eq $targetName) {
-    Write-Host "args missing, archiveName is" $archiveName ", targetName is" $targetName
+if ($null -eq $archiveName) {
+    Write-Host "args missing, archiveName is" $archiveName
     return
 }
 Main
